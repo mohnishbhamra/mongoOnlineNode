@@ -49,6 +49,39 @@ router.get('/specificPerson', async (req, res) => {
 })
 
 
+router.put('/', async (req, res) => {
+    var name = req.param("name");
+    var email = req.param("email");
+    var msg = "updating person- " + name + " email-" + email;
+    console.log(msg);
+    try {
+        var query = { "name": name };
+        var updatedValue = { "email": email };
+        var allPersonData = await PersonModel.updateOne(query, updatedValue);
+        res.send(allPersonData);
+    } catch (exception) {
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+
+    res.send(msg);
+})
+
+router.delete('/', async (req, res) => {
+    var name = req.param("name");
+    var msg = "deleting person by name" + name;
+    console.log(msg);
+    try {
+        var allPersonData = await PersonModel.deleteOne({"name":name});
+        res.send(allPersonData);
+    } catch (exception) {
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+
+    res.send(msg);
+})
+
 router.post('/', (req, res) => {
     var bodyJSON = req.body;
     var msg = "we are on person router post" + JSON.stringify(bodyJSON);
