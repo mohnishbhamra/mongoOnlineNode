@@ -5,9 +5,17 @@ const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     var msg = "we are on person router";
     console.log(msg);
+    try{
+        var allPersonData = await PersonModel.find();
+        res.send(allPersonData);
+    }catch(exception){
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+    
     res.send(msg);
 })
 
