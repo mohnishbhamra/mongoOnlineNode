@@ -26,8 +26,14 @@ router.post('/', (req, res) => {
         var createMsg = "created" + JSON.stringify(result);
         console.log(createMsg);
         res.send(createMsg);
+    }, reject => {
+        var rejectMsg = "caught reject " + reject;
+        console.error(rejectMsg);
+        res.status(400).send(rejectMsg);
     }).catch(err => {
-        console.error("caught error" + err);
+        var errorMsg = "caught error" + err;
+        console.error(errorMsg);
+        res.status(400).send(createMsg);
     })
 
 })

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 personSchemaJson = {
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,
