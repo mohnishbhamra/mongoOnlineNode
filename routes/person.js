@@ -8,29 +8,29 @@ router.use(bodyParser.json());
 router.get('/', async (req, res) => {
     var msg = "getting all person";
     console.log(msg);
-    try{
+    try {
         var allPersonData = await PersonModel.find();
         res.send(allPersonData);
-    }catch(exception){
+    } catch (exception) {
         console.error(exception);
         res.status(400).json(exception);
     }
-    
+
     res.send(msg);
 })
 
 router.get('/specificPerson', async (req, res) => {
     var id = req.param("id");
-    var msg = "getting specific person for id->"+id;
+    var msg = "getting specific person for id->" + id;
     console.log(msg);
-    try{
+    try {
         var allPersonData = await PersonModel.findById(id);
         res.send(allPersonData);
-    }catch(exception){
+    } catch (exception) {
         console.error(exception);
         res.status(400).json(exception);
     }
-    
+
     res.send(msg);
 })
 
