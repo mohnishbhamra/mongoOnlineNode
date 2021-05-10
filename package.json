@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/mohnishbhamra/mongoOnlineNode/issues"
   },
-  "homepage": "https://github.com/mohnishbhamra/mongoOnlineNode#readme"
+  "homepage": "https://github.com/mohnishbhamra/mongoOnlineNode#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7"
+  }
 }
