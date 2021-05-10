@@ -21,17 +21,31 @@ router.get('/', async (req, res) => {
 
 router.get('/specificPerson', async (req, res) => {
     var id = req.param("id");
-    var msg = "getting specific person for id->" + id;
-    console.log(msg);
-    try {
-        var allPersonData = await PersonModel.findById(id);
-        res.send(allPersonData);
-    } catch (exception) {
-        console.error(exception);
-        res.status(400).json(exception);
+    if (id) {
+
+        var msg = "getting specific person for id->" + id;
+        console.log(msg);
+        try {
+            var allPersonData = await PersonModel.findById(id);
+            res.send(allPersonData);
+        } catch (exception) {
+            console.error(exception);
+            res.status(400).json(exception);
+        }
+    } else {
+        var name = req.param("name");
+        var msg = "getting specific person for name->" + name;
+        console.log(msg);
+        try {
+            var allPersonData = await PersonModel.find({ "name": name });
+            res.send(allPersonData);
+        } catch (exception) {
+            console.error(exception);
+            res.status(400).json(exception);
+        }
     }
 
-    res.send(msg);
+
 })
 
 
