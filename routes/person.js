@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const PersonModel = require('../models/personModel');
+const pincodeToEmailListModel = require('../models/mainModel');
+const emailToPincodeModel = require('../models/emailToPincode');
+
 const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
@@ -11,6 +14,81 @@ router.get('/', async (req, res) => {
     try {
         var allPersonData = await PersonModel.find();
         res.send(allPersonData);
+    } catch (exception) {
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+
+    res.send(msg);
+})
+
+router.get('/upgrade', async (req, res) => {
+    var msg = "getting all person";
+    console.log(msg);
+    try {
+        var allPersonData = await PersonModel.find();
+        for(var i=0;i<allPersonData.length;i++){
+            var person = allPersonData[i];
+            var query = {"_id":person.id};
+            var value = {nameObjectList:{
+                email:person.email,
+                name:person.name
+            }}
+            await PersonModel.updateOne(query,value);
+        }
+        res.send(allPersonData);
+    } catch (exception) {
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+
+    res.send(msg);
+})
+
+router.get('/mainData', async (req, res) => {
+    var msg = "getting all person";
+    console.log(msg);
+    try {
+        var allPersonData = await pincodeToEmailListModel.find();
+        res.send(allPersonData);
+    } catch (exception) {
+        console.error(exception);
+        res.status(400).json(exception);
+    }
+
+    res.send(msg);
+})
+
+router.get('/upgradeMain', async (req, res) => {
+    var msg = "getting all person";
+    console.log(msg);
+    try {
+        var allemailToPincodeData = await emailToPincodeModel.find();
+        var allemailToPincodeDataMap = {};
+        for (var i = 0; i < allemailToPincodeData.length; i++) {
+            var record = allemailToPincodeData[i];
+            allemailToPincodeDataMap[record.email] = record.id;
+        }
+
+        var allpincodeToEmailData = await pincodeToEmailListModel.find();
+        for (var i = 0; i < allpincodeToEmailData.length; i++) {
+            var allpincodeToEmailDataRecord = allpincodeToEmailData[i];
+            var query = { "pincode": allpincodeToEmailDataRecord.pincode };
+            var emailList = allpincodeToEmailDataRecord.emailList;
+            var emailObjectListValueArray = [];
+            for (var j = 0; j < emailList.length; j++) {
+                var email = emailList[j];
+                emailObjectListValueArray.push({
+                    "email": email,
+                    "id": allemailToPincodeDataMap[email]
+                })
+            }
+            var value = { "emailObjectList": emailObjectListValueArray }
+            await pincodeToEmailListModel.updateOne(query, value);
+        }
+
+        var newData = await pincodeToEmailListModel.find();
+        res.send(newData);
     } catch (exception) {
         console.error(exception);
         res.status(400).json(exception);

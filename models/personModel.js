@@ -5,11 +5,10 @@ personSchemaJson = {
         required: true,
         unique: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    gender: String
+    name: String,
+    nameObjectList: Object,
+    gender: String,
+    phone: String,
 }
 const personSchema = mongoose.Schema(
     personSchemaJson, { timestamps: true }
