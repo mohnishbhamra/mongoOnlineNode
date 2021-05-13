@@ -147,10 +147,20 @@ router.put('/', async (req, res) => {
 
 router.delete('/', async (req, res) => {
     var name = req.param("name");
-    var msg = "deleting person by name" + name;
-    console.log(msg);
+    var id = req.param("id");
+    var deleteQuery;
+    if(name){
+        var msg = "deleting person by name" + name;
+        deleteQuery = {"name":name};
+        console.log(msg);
+    }else{
+        var msg = "deleting person by id" + id;
+        deleteQuery = {"_id":id};
+        console.log(msg);
+    }
+    
     try {
-        var allPersonData = await PersonModel.deleteOne({"name":name});
+        var allPersonData = await PersonModel.deleteOne(deleteQuery);
         res.send(allPersonData);
     } catch (exception) {
         console.error(exception);
